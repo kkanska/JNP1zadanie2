@@ -1,6 +1,6 @@
 # JNP1 zadanie2
 
-Biblioteka standardowa języka C++ udostępnia bardzo przydatne kontenery (np. unordered_map), których nie ma w bibliotece C.
+Biblioteka standardowa języka C++ udostępnia bardzo przydatne kontenery (np. `unordered_map`), których nie ma w bibliotece C. :sweat:
 
 Często potrzebujemy łączyć kod C++ z kodem spadkowym w C. Celem tego zadania jest napisanie w C++ dwóch modułów obsługujących słowniki przechowujące klucze wraz z wartościami w postaci ciągów znaków, tak aby można ich było używać w C.
 
@@ -11,19 +11,21 @@ Każdy moduł składa się z pliku nagłówkowego (z rozszerzeniem h) i pliku z 
 Moduł **dict** (pliki `dict.h` i `dict.cc`) powinien udostępniać następujące funkcje:
 
 - [ ] `unsigned long dict_new();` Tworzy nowy, pusty słownik i zwraca jego identyfikator.
-- [ ] `void dict_delete(unsigned long id);` Jeżeli istnieje słownik o identyfikatorze id, usuwa go, a w przeciwnym przypadku nic nie robi.
-- [ ] `size_t dict_size(unsigned long id);` Jeżeli istnieje słownik o identyfikatorze id, zwraca liczbę jej elementów, a w przeciwnym przypadku zwraca 0.
-- [ ] `void dict_insert(unsigned long id, const char* key, const char* value);` Jeżeli istnieje słownik o identyfikatorze id oraz key != NULL i value != NULL, wstawia wartość value pod kluczem key. W przeciwnym przypadku nic nie robi. Gwarancje odnośnie kosztów wstawienia mają być takie same jak w przypadku kontenera unordered_map (plus koszt odnalezienia słownika o danym identyfikatorze).
-- [ ] `void dict_remove(unsigned long id, const char* key);` Jeżeli istnieje słownik o identyfikatorze id i zawiera klucz key, to usuwa klucz oraz wartość związaną z tym kluczem, a w przeciwnym przypadku nic nie robi.
-- [ ] `const char* dict_find(unsigned long id, const char* key);` Jeżeli istnieje słownik o identyfikatorze id i zawiera wartość pod kluczem key, to zwraca wskaźnik do tej wartości, a w przeciwnym zwraca wartość ze słownika globalnego. Jeśli w słowniku globalnym nie ma wartości pod kluczem key, to zwraca NULL.
-- [ ] `void dict_clear(unsigned long id);` Jeżeli istnieje słownik o identyfikatorze id, usuwa wszystkie jego elementy, a w przeciwnym przypadki nic nie robi.
-- [ ] `void dict_copy(unsigned long src_id, unsigned long dst_id);` Jeżeli istnieją słowniki o identyfikatorach src_id oraz dst_id, to kopiuje zawartość słownika o identyfikatorze src_id do słownika o identyfikatorze dst_id, a w przeciwnym przypadku nic nie robi.
+- [ ] `void dict_delete(unsigned long id);` Jeżeli istnieje słownik o identyfikatorze `id`, usuwa go, a w przeciwnym przypadku nic nie robi.
+- [ ] `size_t dict_size(unsigned long id);` Jeżeli istnieje słownik o identyfikatorze `id`, zwraca liczbę jej elementów, a w przeciwnym przypadku zwraca `0`.
+- [ ] `void dict_insert(unsigned long id, const char* key, const char* value);` Jeżeli istnieje słownik o identyfikatorze `id` oraz `key != NULL` i `value != NULL`, wstawia wartość value pod kluczem `key`. W przeciwnym przypadku nic nie robi. Gwarancje odnośnie kosztów wstawienia mają być takie same jak w przypadku kontenera `unordered_map` (plus koszt odnalezienia słownika o danym identyfikatorze).
+- [ ] `void dict_remove(unsigned long id, const char* key);` Jeżeli istnieje słownik o identyfikatorze `id` i zawiera klucz `key`, to usuwa klucz oraz wartość związaną z tym kluczem, a w przeciwnym przypadku nic nie robi.
+- [ ] `const char* dict_find(unsigned long id, const char* key);` Jeżeli istnieje słownik o identyfikatorze `id` i zawiera wartość pod kluczem `key`, to zwraca wskaźnik do tej wartości, a w przeciwnym zwraca wartość ze słownika globalnego. Jeśli w słowniku globalnym nie ma wartości pod kluczem `key`, to zwraca `NULL`.
+- [ ] `void dict_clear(unsigned long id);` Jeżeli istnieje słownik o identyfikatorze `id`, usuwa wszystkie jego elementy, a w przeciwnym przypadki nic nie robi.
+- [ ] `void dict_copy(unsigned long src_id, unsigned long dst_id);` Jeżeli istnieją słowniki o identyfikatorach `src_id` oraz `dst_id`, to kopiuje zawartość słownika o identyfikatorze `src_id` do słownika o identyfikatorze `dst_id`, a w przeciwnym przypadku nic nie robi.
 
 Moduł **dictglobal** (pliki `dictglobal.h` i `dictglobal.cc`) powinien udostępniać
 funkcję
 - [ ] `unsigned long dict_global();` Zwraca identyfikator globalnego słownika, którego nie można usunąć.
+
 oraz stałą
-- [ ] `MAX_GLOBAL_DICT_SIZE` Stała jest równa 42 i określa maksymalny rozmiar globalnego słownika. Do globalnego słownika można wstawiać kolejne klucze z wartościami tylko, gdy jego rozmiar po wstawieniu nie będzie przekraczał maksymalnego rozmiaru.
+
+- [ ] `MAX_GLOBAL_DICT_SIZE` Stała jest równa `42` i określa maksymalny rozmiar globalnego słownika. Do globalnego słownika można wstawiać kolejne klucze z wartościami tylko, gdy jego rozmiar po wstawieniu nie będzie przekraczał maksymalnego rozmiaru.
 
 Moduły **dict** i **dictglobal** powinny sprawdzać poprawność parametrów i poprawność wykonania funkcji za pomocą asercji i wypisywać na standardowy strumień błędów informacje diagnostyczne. Kompilowanie z parametrem `-DNDEBUG` powinno wyłączać wypisywanie.
 
@@ -71,5 +73,5 @@ lub
 
 `grupaN/zadanie2/ab123456+cd123456+ef123456`
 
-gdzie N jest numerem grupy, a ab123456, cd123456, ef123456 są identyfikatorami członków zespołu umieszczającego to rozwiązanie.
+gdzie `N` jest numerem grupy, a `ab123456`, `cd123456`, `ef123456` są identyfikatorami członków zespołu umieszczającego to rozwiązanie.
 Katalog z rozwiązaniem nie powinien zawierać innych plików, ale może zawierać podkatalog private, gdzie można umieszczać różne pliki, np. swoje testy. Pliki umieszczone w tym podkatalogu nie będą oceniane.
