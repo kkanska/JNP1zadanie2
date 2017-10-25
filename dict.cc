@@ -9,6 +9,7 @@ typedef std::unordered_map<std::string, std::string> Dict;
 typedef unsigned long IdentificatorType;
 
 // consider map<unsigned long, unordered_map>
+// somehow initialize the dictglobal
 std::map<IdentificatorType, Dict> dictionaries;
 IdentificatorType dictCounter = 0;
 
@@ -19,8 +20,6 @@ IdentificatorType dict_new() {
 }
 
 void dict_remove(IdentificatorType id, const char* key) {
-    // maybe special version for dictglobal
-
     auto dictionaryIt = dictionaries.find(id);
     if (dictionaryIt != dictionaries.end()) {
         dictionaryIt->second.erase(key);
@@ -36,18 +35,15 @@ const char* dict_find(IdentificatorType id, const char* key) {
         }
     }
     
-    /*
-    if (there exists value under key in global dictionary) {
-        return that value
+    auto stringIt = dictionaries.at(0).find(key);
+    if (stringIt != dictionaries.at(0).end()) {
+        return stringIt->second.c_str();
     }
-    */
 
     return NULL;
 }
 
 void dict_clear(IdentificatorType id) {
-    // maybe special version for dictglobal
-
     auto dictionaryIt = dictionaries.find(id);
     if (dictionaryIt != dictionaries.end()) {
         dictionaryIt->second.clear();
