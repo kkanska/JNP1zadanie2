@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "dict.h"
+#include "dictglobal.h"
 
 typedef std::unordered_map<std::string, std::string> Dict;
 typedef unsigned long IdentificatorType;
