@@ -9,7 +9,7 @@ typedef std::unordered_map<std::string, std::string> Dict;
 typedef unsigned long IdentificatorType;
 
 // consider map<unsigned long, unordered_map>
-// somehow initialize the dictglobal
+// somehow initialize dictglobal dictionary
 std::map<IdentificatorType, Dict> dictionaries;
 IdentificatorType dictCounter = 0;
 
