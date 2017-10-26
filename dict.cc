@@ -61,3 +61,14 @@ void dict_copy(IdentificatorType src_id, IdentificatorType dst_id) {
         // copy contents
     }
 }
+
+static void dict_not_found_error(std::string funcName, IdentificatorType id) {
+    std::cerr << funcName << ": dict " << id << " does not exist" << std::endl;
+}
+
+static void key_not_in_dictionary_error(std::string funcName,
+                                        IdentificatorType id,
+                                        const char* key) {
+    std::cerr << funcName << ": dict " << id 
+              << " does not contain the key " << key << std::endl;
+}
