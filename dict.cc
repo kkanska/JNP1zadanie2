@@ -12,7 +12,7 @@ typedef unsigned long IdentificatorType;
 // consider map<unsigned long, unordered_map>
 // somehow initialize dictglobal dictionary
 std::map<IdentificatorType, Dict> dictionaries;
-IdentificatorType dictCounter = 0;
+IdentificatorType dictCounter = dict_global();
 
 IdentificatorType dict_new() {
     dictionaries.insert(std::pair<IdentificatorType, Dict>(++dictCounter, Dict()));
