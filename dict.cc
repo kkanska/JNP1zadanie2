@@ -63,12 +63,43 @@ void dict_copy(IdentificatorType src_id, IdentificatorType dst_id) {
 }
 
 static void dict_not_found_msg(std::string funcName, IdentificatorType id) {
-    std::cerr << funcName << ": dict " << id << " does not exist" << std::endl;
+    std::cerr << funcName << ": dict " << id << " does not exist" << "\n";
 }
 
-static void key_not_in_dictionary_msg(std::string funcName,
-                                        IdentificatorType id,
-                                        const char* key) {
+static void key_not_found_msg(std::string funcName,
+                              IdentificatorType id,
+                              const char* key) {
     std::cerr << funcName << ": dict " << id 
-              << " does not contain the key " << key << std::endl;
+              << " does not contain the key " << key << "\"\n";
+}
+
+static void key_removed_msg(std::string funcName,
+                            IdentificatorType id,
+                            const char* key) {
+    std::cerr << funcName << ": dict " << id
+              << ", the key \"" << key << "\" has been removed\n";
+}
+
+static void value_found_msg(std::string funcName,
+                            IdentificatorType id,
+                            const char* key,
+                            std::string value) {
+    std::cerr << funcName << ": dict " << id
+              << ", the key \"" << key
+              << "\" has the value \"" << value << "\"\n";
+}
+
+static void dict_copied_msg(std::string funcName,
+                            IdentificatorType src_id,
+                            IdentificatorType dst_id) {
+    std::cerr << funcName << ": dict " << src_id
+              << " has been copied into dict " << dst_id << "\n";
+}
+
+static void searching_global_dictionary_msg(std::string funcName) {
+    std::cerr << funcName << ": looking up the Global Dictionary\n";
+}
+
+static void clear_msg(std::string funcName, IdentificatorType id) {
+    std::cerr << funcName << ": dict " << id << " has been cleared\n";
 }
