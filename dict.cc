@@ -32,8 +32,10 @@ static std::map<IdentificatorType, Dict>& dicts() {
 }
 
 static std::string parse_char_param(const char* param) {
-    if (param != NULL)
-        return "\"" + param + "\"";
+    if (param != NULL) {
+        std::string paramStr(param);
+        return "\"" + paramStr + "\"";
+    }
     else
         return "NULL";
 }
