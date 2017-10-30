@@ -1,6 +1,8 @@
 #ifndef __DICT_H__
 #define __DICT_H__
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

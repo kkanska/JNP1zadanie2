@@ -7,148 +7,143 @@
 #include "dict.h"
 #include "dictglobal.h"
 
-#ifndef NDEBUG
-    static const bool debug = false;
-#else
-    static const bool debug = true;
-#endif
+using Dict = std::unordered_map<std::string, std::string>;
+using IdentificatorType = unsigned long;
 
-typedef std::unordered_map<std::string, std::string> Dict;
-typedef unsigned long IdentificatorType;
+namespace {
+    #ifndef NDEBUG
+        const bool debug = false;
+    #else
+        const bool debug = true;
+    #endif
 
-static IdentificatorType dictCounter = dict_global();
+    IdentificatorType dictCounter = 0;
 
-static const std::map<IdentificatorType, Dict> init_dicts() {
-    std::map<IdentificatorType, Dict> dicts;
-    dicts.insert(std::pair<IdentificatorType, Dict>(dict_global(), Dict()));
+    std::map<IdentificatorType, Dict>& dicts() {
+        static std::map<IdentificatorType, Dict> dicts;
 
-    return dicts;
-}
-
-static std::map<IdentificatorType, Dict>& dicts() {
-    static std::map<IdentificatorType, Dict> dicts = init_dicts();
-
-    return dicts;
-}
-
-static std::string parse_char_param(const char* param) {
-    if (param != NULL) {
-        std::string paramStr(param);
-        return "\"" + paramStr + "\"";
+        return dicts;
     }
-    else
-        return "NULL";
-}
 
-static void function_called_msg(std::string funcName,
-                                std::string params) {
-    if (debug)
-        std::cerr << funcName << "(" << params << ")" << std::endl;
-}
-
-static void dict_new_msg(IdentificatorType id) {
-    if (debug)
-        std::cerr << "dict_new: dict " << id
-                  << " has been created" << std::endl;
-}
-
-static void dict_delete_success_msg(IdentificatorType id) {
-    if (debug)
-        std::cerr << "dict_delete: dict " << id
-                  << " has been deleted" << std::endl;
-}
-
-static void dict_delete_error_msg() {
-    if (debug)
-        std::cerr << "dict_delete: an attempt to remove the Global Dictionary"
-                  << std::endl;
-}
-
-static void dict_description_msg(IdentificatorType id) {
-    if (debug) {
-        if (id != dict_global())
-            std::cerr << "dict " << id;
+    std::string parse_char_param(const char* param) {
+        if (param != NULL) {
+            std::string paramStr(param);
+            return "\"" + paramStr + "\"";
+        }
         else
-            std::cerr << "the Global Dictionary";
+            return "NULL";
     }
-}
 
-static void dict_size_msg(IdentificatorType id, size_t size) {
-    if (debug) {
-        std::cerr << "dict_size: ";
-
-        dict_description_msg(id);
-
-        std::cerr << " contains " << size << " element(s)" << std::endl;
+    void function_called_msg(std::string funcName,
+                                    std::string params) {
+        if (debug)
+            std::cerr << funcName << "(" << params << ")" << std::endl;
     }
-}
 
-static void dict_insert_success_msg(IdentificatorType id,
-                                    std::string key,
-                                    std::string value) {
-    if (debug) {
-        std::cerr << "dict_insert: ";
-
-        dict_description_msg(id);
-
-        std::cerr << ", the pair (" << key << ", " << value << ")"
-                  << "has been inserted" << std::endl;
+    void dict_new_msg(IdentificatorType id) {
+        if (debug)
+            std::cerr << "dict_new: dict " << id
+                      << " has been created" << std::endl;
     }
-}
 
-static void dict_insert_error_msg(IdentificatorType id, std::string param) {
-    if (debug)
-        std::cerr << "dict_insert: dict " << id
-                  << " an attempt to insert NULL " << param << std::endl;
-}
+    void dict_delete_success_msg(IdentificatorType id) {
+        if (debug)
+            std::cerr << "dict_delete: dict " << id
+                      << " has been deleted" << std::endl;
+    }
 
-static void dict_not_found_msg(std::string funcName, IdentificatorType id) {
-    if (debug)
-        std::cerr << funcName << ": dict " << id << " does not exist" << "\n";
-}
+    void dict_delete_error_msg() {
+        if (debug)
+            std::cerr << "dict_delete: an attempt to remove the Global Dictionary"
+                      << std::endl;
+    }
 
-static void key_not_found_msg(std::string funcName,
-                              IdentificatorType id,
-                              const char* key) {
-    if (debug)
-        std::cerr << funcName << ": dict " << id
-                  << " does not contain the key " << key << "\"\n";
-}
+    void dict_description_msg(IdentificatorType id) {
+        if (debug) {
+            if (id != dict_global())
+                std::cerr << "dict " << id;
+            else
+                std::cerr << "the Global Dictionary";
+        }
+    }
 
-static void key_removed_msg(std::string funcName,
-                            IdentificatorType id,
-                            const char* key) {
-    if (debug)
-        std::cerr << funcName << ": dict " << id
-                  << ", the key \"" << key << "\" has been removed\n";
-}
+    void dict_size_msg(IdentificatorType id, size_t size) {
+        if (debug) {
+            std::cerr << "dict_size: ";
 
-static void value_found_msg(std::string funcName,
-                            IdentificatorType id,
-                            const char* key,
-                            std::string value) {
-    if (debug)
-        std::cerr << funcName << ": dict " << id
-                  << ", the key \"" << key
-                  << "\" has the value \"" << value << "\"\n";
-}
+            dict_description_msg(id);
 
-static void dict_copied_msg(std::string funcName,
-                            IdentificatorType src_id,
-                            IdentificatorType dst_id) {
-    if (debug)
-        std::cerr << funcName << ": dict " << src_id
-                  << " has been copied into dict " << dst_id << "\n";
-}
+            std::cerr << " contains " << size << " element(s)" << std::endl;
+        }
+    }
 
-static void search_global_dict_msg(std::string funcName) {
-    if (debug)
-        std::cerr << funcName << ": looking up the Global Dictionary\n";
-}
+    void dict_insert_success_msg(IdentificatorType id,
+                                        std::string key,
+                                        std::string value) {
+        if (debug) {
+            std::cerr << "dict_insert: ";
 
-static void dict_cleared_msg(std::string funcName, IdentificatorType id) {
-    if (debug)
-        std::cerr << funcName << ": dict " << id << " has been cleared\n";
+            dict_description_msg(id);
+
+            std::cerr << ", the pair (" << key << ", " << value << ")"
+                      << "has been inserted" << std::endl;
+        }
+    }
+
+    void dict_insert_error_msg(IdentificatorType id, std::string param) {
+        if (debug)
+            std::cerr << "dict_insert: dict " << id
+                      << " an attempt to insert NULL " << param << std::endl;
+    }
+
+    void dict_not_found_msg(std::string funcName, IdentificatorType id) {
+        if (debug)
+            std::cerr << funcName << ": dict " << id << " does not exist" << "\n";
+    }
+
+    void key_not_found_msg(std::string funcName,
+                                  IdentificatorType id,
+                                  const char* key) {
+        if (debug)
+            std::cerr << funcName << ": dict " << id
+                      << " does not contain the key " << key << "\"\n";
+    }
+
+    void key_removed_msg(std::string funcName,
+                                IdentificatorType id,
+                                const char* key) {
+        if (debug)
+            std::cerr << funcName << ": dict " << id
+                      << ", the key \"" << key << "\" has been removed\n";
+    }
+
+    void value_found_msg(std::string funcName,
+                                IdentificatorType id,
+                                const char* key,
+                                std::string value) {
+        if (debug)
+            std::cerr << funcName << ": dict " << id
+                      << ", the key \"" << key
+                      << "\" has the value \"" << value << "\"\n";
+    }
+
+    void dict_copied_msg(std::string funcName,
+                                IdentificatorType src_id,
+                                IdentificatorType dst_id) {
+        if (debug)
+            std::cerr << funcName << ": dict " << src_id
+                      << " has been copied into dict " << dst_id << "\n";
+    }
+
+    void search_global_dict_msg(std::string funcName) {
+        if (debug)
+            std::cerr << funcName << ": looking up the Global Dictionary\n";
+    }
+
+    void dict_cleared_msg(std::string funcName, IdentificatorType id) {
+        if (debug)
+            std::cerr << funcName << ": dict " << id << " has been cleared\n";
+    }
 }
 
 IdentificatorType dict_new() {
