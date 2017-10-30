@@ -19,3 +19,6 @@ dict.o:
 
 dictglobal.o:
 	$(CXX) -c $(CXXFLAGS) dictglobal.cc -o dictglobal.o
+
+clean:
+	rm -f *.o dict_test1 dict_test2a dict_test2b
