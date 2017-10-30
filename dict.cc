@@ -163,10 +163,10 @@ size_t dict_size(unsigned long id) {
 
 void dict_insert(unsigned long id, const char* key, const char* value) {
     std::stringstream ss;
-    std::string keyStr, valueStr;
-    keyStr = parse_char_param(key);
-    valueStr = parse_char_param(value);
-    ss << id << ", " << keyStr << ", " << valueStr;
+    std::string keyDescription, valueDescription;
+    keyDescription = parse_char_param(key);
+    valueDescription = parse_char_param(value);
+    ss << id << ", " << keyDescription << ", " << valueDescription;
 
     function_called_msg("dict_insert", ss.str());
 
@@ -179,8 +179,11 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
             dict_insert_error_msg(id, "value");
         }
         else {
-            dictionaryIt->second.insert(std::make_pair(key, value));
-            dict_insert_success_msg(id, keyStr, valueStr);
+            std::string keyStr(key);
+            std::string valueStr(value);
+
+            dictionaryIt->second.insert(std::make_pair(keyStr, valueStr));
+            dict_insert_success_msg(id, keyDescription, valueDescription);
         }
     }
     else
