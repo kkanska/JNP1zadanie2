@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <map>
 #include <unordered_map>
 #include <vector>
@@ -13,6 +14,65 @@ typedef unsigned long IdentificatorType;
 // somehow initialize dictglobal dictionary
 std::map<IdentificatorType, Dict> dictionaries;
 IdentificatorType dictCounter = dict_global();
+
+
+static std::string parse_char_param(std::string param) {
+    if (param != "")
+        return "\"" + param + "\"";
+    else
+        return "NULL";
+}
+
+static void function_called_msg(std::string funcName,
+                                std::string params) {
+    std::cerr << funcName << "(" << params << ")" << std::endl;
+}
+
+static void dict_new_msg(IdentificatorType id) {
+    std::cerr << "dict_new: dict " << id
+              << " has been created" << std::endl;
+}
+
+static void dict_delete_success_msg(IdentificatorType id) {
+    std::cerr << "dict_delete: dict " << id
+              << " has been deleted" << std::endl;
+}
+
+static void dict_delete_error_msg() {
+    std::cerr << "dict_delete: an attempt to remove the Global Dictionary"
+              << std::endl;
+}
+
+static void dict_description_msg(IdentificatorType id) {
+    if (id == dict_global())
+        std::cerr << "dict " << id;
+    else
+        std::cerr << "the Global Dictionary";
+}
+
+static void dict_size_msg(IdentificatorType id, size_t size) {
+    std::cerr << "dict_size: ";
+
+    dict_description_msg(id);
+
+    std::cerr << " contains " << size << " element(s)" << std::endl;
+}
+
+static void dict_insert_success_msg(IdentificatorType id,
+                                    std::string key,
+                                    std::string value) {
+    std::cerr << "dict_insert: ";
+
+    dict_description_msg(id);
+
+    std::cerr << ", the pair (" << key << ", " << value << ")"
+              << "has been inserted" << std::endl;
+}
+
+static void dict_insert_error_msg(IdentificatorType id, std::string param) {
+    std::cerr << "dict_insert: dict " << id
+              << " an attempt to insert NULL " << param << std::endl;
+}
 
 static void dict_not_found_msg(std::string funcName, IdentificatorType id) {
     std::cerr << funcName << ": dict " << id << " does not exist" << "\n";
@@ -57,9 +117,74 @@ static void dict_cleared_msg(std::string funcName, IdentificatorType id) {
 }
 
 IdentificatorType dict_new() {
-    dictionaries.insert(std::pair<IdentificatorType, Dict>(++dictCounter, Dict()));
+    function_called_msg("dict_new", "");
+    dictionaries.insert(std::make_pair(++dictCounter, Dict()));
+
+    dict_new_msg(dictCounter);
 
     return dictCounter;
+}
+
+void dict_delete(unsigned long id) {
+    std::stringstream ss;
+    ss << id;
+    function_called_msg("dict_delete", ss.str());
+
+    auto dictionaryIt = dictionaries.find(id);
+    if (dictionaryIt != dictionaries.end()) {
+        if (id == dict_global()) {
+            dict_delete_error_msg();
+        }
+        else {
+            dictionaries.erase(id);
+            dict_delete_success_msg(id);
+        }
+    }
+}
+
+size_t dict_size(unsigned long id) {
+    std::stringstream ss;
+    ss << id;
+    function_called_msg("dict_size", ss.str());
+
+    auto dictionaryIt = dictionaries.find(id);
+    if (dictionaryIt != dictionaries.end()) {
+        size_t dictSize = dictionaryIt->second.size();
+
+        dict_size_msg(id, dictSize);
+
+        return dictSize;
+    }
+    else {
+        dict_not_found_msg("dict_size", id);
+        return 0;
+    }
+}
+
+void dict_insert(unsigned long id, const char* key, const char* value) {
+    std::stringstream ss;
+    std::string keyStr, valueStr;
+    keyStr = parse_char_param(key);
+    valueStr = parse_char_param(value);
+    ss << id << ", " << keyStr << ", " << valueStr;
+
+    function_called_msg("dict_insert", ss.str());
+
+    auto dictionaryIt = dictionaries.find(id);
+    if (dictionaryIt != dictionaries.end()) {
+        if (key == NULL) {
+            dict_insert_error_msg(id, "key");
+        }
+        else if (value == NULL) {
+            dict_insert_error_msg(id, "value");
+        }
+        else {
+            dictionaryIt->second.insert(std::make_pair(key, value));
+            dict_insert_success_msg(id, keyStr, valueStr);
+        }
+    }
+    else
+        dict_not_found_msg("dict_insert", id);
 }
 
 void dict_remove(IdentificatorType id, const char* key) {
