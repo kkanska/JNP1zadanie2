@@ -1,0 +1,8 @@
+#ifndef __CDICTGLOBAL__
+#define __CDICTGLOBAL__
+
+namespace jnp1 {
+    #include "dictglobal.h"
+}
+
+#endif /* __CDICTGLOBAL__ */
