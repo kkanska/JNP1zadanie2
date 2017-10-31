@@ -8,7 +8,7 @@
 #include "dictglobal.h"
 
 using Dict = std::unordered_map<std::string, std::string>;
-using IdentificatorType = unsigned long;
+using IdentifierType = unsigned long;
 
 namespace {
     #ifndef NDEBUG
@@ -17,10 +17,10 @@ namespace {
         const bool debug = true;
     #endif
 
-    IdentificatorType dictCounter = 0;
+    IdentifierType dictCounter = 0;
 
-    std::map<IdentificatorType, Dict>& dicts() {
-        static std::map<IdentificatorType, Dict> dicts;
+    std::map<IdentifierType, Dict>& dicts() {
+        static std::map<IdentifierType, Dict> dicts;
 
         return dicts;
     }
@@ -40,13 +40,13 @@ namespace {
             std::cerr << funcName << "(" << params << ")" << std::endl;
     }
 
-    void dict_new_msg(IdentificatorType id) {
+    void dict_new_msg(IdentifierType id) {
         if (debug)
             std::cerr << "dict_new: dict " << id
                       << " has been created" << std::endl;
     }
 
-    void dict_delete_success_msg(IdentificatorType id) {
+    void dict_delete_success_msg(IdentifierType id) {
         if (debug)
             std::cerr << "dict_delete: dict " << id
                       << " has been deleted" << std::endl;
@@ -58,7 +58,7 @@ namespace {
                       << std::endl;
     }
 
-    void dict_description_msg(IdentificatorType id) {
+    void dict_description_msg(IdentifierType id) {
         if (debug) {
             if (id != dict_global())
                 std::cerr << "dict " << id;
@@ -67,7 +67,7 @@ namespace {
         }
     }
 
-    void dict_size_msg(IdentificatorType id, size_t size) {
+    void dict_size_msg(IdentifierType id, size_t size) {
         if (debug) {
             std::cerr << "dict_size: ";
 
@@ -77,7 +77,7 @@ namespace {
         }
     }
 
-    void dict_insert_success_msg(IdentificatorType id,
+    void dict_insert_success_msg(IdentifierType id,
                                         std::string key,
                                         std::string value) {
         if (debug) {
@@ -90,19 +90,19 @@ namespace {
         }
     }
 
-    void dict_insert_error_msg(IdentificatorType id, std::string param) {
+    void dict_insert_error_msg(IdentifierType id, std::string param) {
         if (debug)
             std::cerr << "dict_insert: dict " << id
                       << " an attempt to insert NULL " << param << std::endl;
     }
 
-    void dict_not_found_msg(std::string funcName, IdentificatorType id) {
+    void dict_not_found_msg(std::string funcName, IdentifierType id) {
         if (debug)
             std::cerr << funcName << ": dict " << id << " does not exist" << "\n";
     }
 
     void key_not_found_msg(std::string funcName,
-                                  IdentificatorType id,
+                                  IdentifierType id,
                                   const char* key) {
         if (debug)
             std::cerr << funcName << ": dict " << id
@@ -110,7 +110,7 @@ namespace {
     }
 
     void key_removed_msg(std::string funcName,
-                                IdentificatorType id,
+                                IdentifierType id,
                                 const char* key) {
         if (debug)
             std::cerr << funcName << ": dict " << id
@@ -118,7 +118,7 @@ namespace {
     }
 
     void value_found_msg(std::string funcName,
-                                IdentificatorType id,
+                                IdentifierType id,
                                 const char* key,
                                 std::string value) {
         if (debug)
@@ -128,8 +128,8 @@ namespace {
     }
 
     void dict_copied_msg(std::string funcName,
-                                IdentificatorType src_id,
-                                IdentificatorType dst_id) {
+                                IdentifierType src_id,
+                                IdentifierType dst_id) {
         if (debug)
             std::cerr << funcName << ": dict " << src_id
                       << " has been copied into dict " << dst_id << "\n";
@@ -140,13 +140,13 @@ namespace {
             std::cerr << funcName << ": looking up the Global Dictionary\n";
     }
 
-    void dict_cleared_msg(std::string funcName, IdentificatorType id) {
+    void dict_cleared_msg(std::string funcName, IdentifierType id) {
         if (debug)
             std::cerr << funcName << ": dict " << id << " has been cleared\n";
     }
 }
 
-IdentificatorType dict_new() {
+IdentifierType dict_new() {
     function_called_msg("dict_new", "");
     dicts().insert(std::make_pair(++dictCounter, Dict()));
 
@@ -222,7 +222,7 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
         dict_not_found_msg("dict_insert", id);
 }
 
-void dict_remove(IdentificatorType id, const char* key) {
+void dict_remove(IdentifierType id, const char* key) {
     auto dictionaryIt = dicts().find(id);
     if (dictionaryIt != dicts().end()) {
         if (dictionaryIt->second.erase(key) > 0) {
@@ -237,7 +237,7 @@ void dict_remove(IdentificatorType id, const char* key) {
     }
 }
 
-const char* dict_find(IdentificatorType id, const char* key) {
+const char* dict_find(IdentifierType id, const char* key) {
     auto dictionaryIt = dicts().find(id);
     if (dictionaryIt != dicts().end()) {
         auto stringIt = dictionaryIt->second.find(key);
@@ -269,7 +269,7 @@ const char* dict_find(IdentificatorType id, const char* key) {
     return NULL;
 }
 
-void dict_clear(IdentificatorType id) {
+void dict_clear(IdentifierType id) {
     auto dictionaryIt = dicts().find(id);
     if (dictionaryIt != dicts().end()) {
         dict_cleared_msg("dict_clear", id);
@@ -281,7 +281,7 @@ void dict_clear(IdentificatorType id) {
     }
 }
 
-void dict_copy(IdentificatorType src_id, IdentificatorType dst_id) {
+void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
     auto srcDictionaryIt = dicts().find(src_id);
     auto dstDictionaryIt = dicts().find(dst_id);
     if (srcDictionaryIt != dicts().end() &&
