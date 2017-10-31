@@ -1,0 +1,8 @@
+#ifndef __CDICT__
+#define __CDICT__
+
+namespace jnp1 {
+    #include "dict.h"
+}
+
+#endif /* __CDICT__ */
