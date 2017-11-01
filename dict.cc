@@ -240,13 +240,11 @@ void dict_remove(IdentifierType id, const char* key) {
         if (dictionaryIt->second.erase(key) > 0) {
             key_removed_msg("dict_remove", id, key);
         }
-        else {
+        else
             key_not_found_msg("dict_remove", id, key);
-        }
     }
-    else {
+    else
         dict_not_found_msg("dict_remove", id);
-    }
 }
 
 const char* dict_find(IdentifierType id, const char* key) {
@@ -258,13 +256,11 @@ const char* dict_find(IdentifierType id, const char* key) {
 
             return stringIt->second.c_str();
         }
-        else {
+        else
             key_not_found_msg("dict_find", id, key);
-        }
     }
-    else {
+    else
         dict_not_found_msg("dict_find", id);
-    }
 
     search_global_dict_msg("dict_find");
 
@@ -274,9 +270,8 @@ const char* dict_find(IdentifierType id, const char* key) {
 
         return stringIt->second.c_str();
     }
-    else {
+    else
         key_not_found_msg("dict_find", dict_global(), key);
-    }
 
     return NULL;
 }
@@ -288,9 +283,8 @@ void dict_clear(IdentifierType id) {
 
         dictionaryIt->second.clear();
     }
-    else {
+    else
         dict_not_found_msg("dict_clear", id);
-    }
 }
 
 void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
