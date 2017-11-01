@@ -165,7 +165,7 @@ void dict_delete(unsigned long id) {
     ss << id;
     function_called_msg("dict_delete", ss.str());
 
-    auto dictionaryIt = dicts().find(id);
+    const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
         if (id == dict_global()) {
@@ -183,7 +183,7 @@ size_t dict_size(unsigned long id) {
     ss << id;
     function_called_msg("dict_size", ss.str());
 
-    auto dictionaryIt = dicts().find(id);
+    const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
         size_t dictSize = dictionaryIt->second.size();
@@ -194,21 +194,21 @@ size_t dict_size(unsigned long id) {
     }
     else {
         dict_not_found_msg("dict_size", id);
+
         return 0;
     }
 }
 
 void dict_insert(unsigned long id, const char* key, const char* value) {
     std::stringstream ss;
-    std::string keyDescription, valueDescription;
+    const std::string keyDescription = parse_char_param(key);
+    const std::string valueDescription = parse_char_param(value);
 
-    keyDescription = parse_char_param(key);
-    valueDescription = parse_char_param(value);
     ss << id << ", " << keyDescription << ", " << valueDescription;
 
     function_called_msg("dict_insert", ss.str());
 
-    auto dictionaryIt = dicts().find(id);
+    const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
         if (key == NULL) {
@@ -223,11 +223,12 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
             if ((id == globalDictId)
                 && (dict_size(globalDictId) == MAX_GLOBAL_DICT_SIZE)) {
                 dict_insert_global_dict_msg();
+
                 return;
             }
 
-            std::string keyStr(key);
-            std::string valueStr(value);
+            const std::string keyStr(key);
+            const std::string valueStr(value);
 
             Dict dict = dictionaryIt->second;
             auto dictIt = dict.find(keyStr);
@@ -245,7 +246,7 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
 }
 
 void dict_remove(IdentifierType id, const char* key) {
-    auto dictionaryIt = dicts().find(id);
+    const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
         if (dictionaryIt->second.erase(key) > 0) {
@@ -259,14 +260,18 @@ void dict_remove(IdentifierType id, const char* key) {
 }
 
 const char* dict_find(IdentifierType id, const char* key) {
-    auto dictionaryIt = dicts().find(id);
+    const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
-        auto stringIt = dictionaryIt->second.find(key);
-        if (stringIt != dictionaryIt->second.end()) {
-            value_found_msg("dict_find", id, key, stringIt->second);
+        const Dict dict = dictionaryIt->second;
+        const auto stringIt = dict.find(key);
 
-            return stringIt->second.c_str();
+        if (stringIt != dict.end()) {
+            const std::string value = stringIt->second;
+
+            value_found_msg("dict_find", id, key, value);
+
+            return value.c_str();
         }
         else
             key_not_found_msg("dict_find", id, key);
@@ -274,28 +279,22 @@ const char* dict_find(IdentifierType id, const char* key) {
     else
         dict_not_found_msg("dict_find", id);
 
-    search_global_dict_msg("dict_find");
+    if (id != dict_global()) {
+        search_global_dict_msg("dict_find");
 
-    auto stringIt = dicts().at(dict_global()).find(key);
-
-    if (stringIt != dicts().at(dict_global()).end()) {
-        value_found_msg("dict_find", dict_global(), key, stringIt->second);
-
-        return stringIt->second.c_str();
+        return dict_find(dict_global(), key);
     }
-    else
-        key_not_found_msg("dict_find", dict_global(), key);
 
     return NULL;
 }
 
 void dict_clear(IdentifierType id) {
-    auto dictionaryIt = dicts().find(id);
+    const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
-        dict_cleared_msg("dict_clear", id);
-
         dictionaryIt->second.clear();
+
+        dict_cleared_msg("dict_clear", id);
     }
     else
         dict_not_found_msg("dict_clear", id);
@@ -305,8 +304,8 @@ void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
     if (src_id == dst_id)
         return;
 
-    auto srcDictionaryIt = dicts().find(src_id);
-    auto dstDictionaryIt = dicts().find(dst_id);
+    const auto srcDictionaryIt = dicts().find(src_id);
+    const auto dstDictionaryIt = dicts().find(dst_id);
 
     if (srcDictionaryIt != dicts().end() &&
         dstDictionaryIt != dicts().end()) {
