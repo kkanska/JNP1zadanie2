@@ -292,8 +292,11 @@ void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
     auto dstDictionaryIt = dicts().find(dst_id);
     if (srcDictionaryIt != dicts().end() &&
         dstDictionaryIt != dicts().end()) {
-        // do not copy if destination dictionary is dictglobal and amount of keys exceeds size
+        // TODO: do not copy if destination dictionary is dictglobal and amount of keys exceeds size
 
-        // copy contents
+        Dict srcDict = srcDictionaryIt->second;
+        Dict dstDict = dstDictionaryIt->second;
+
+        dstDict.insert(srcDict.begin(), srcDict.end());
     }
 }
