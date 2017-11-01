@@ -11,7 +11,7 @@ using Dict = std::unordered_map<std::string, std::string>;
 using IdentifierType = unsigned long;
 
 namespace {
-    #ifndef NDEBUG
+    #ifdef NDEBUG
         const bool debug = false;
     #else
         const bool debug = true;
@@ -91,7 +91,7 @@ namespace {
             dict_description_msg(id);
 
             std::cerr << ", the pair (" << key << ", " << value << ")"
-                      << "has been inserted" << std::endl;
+                      << " has been inserted" << std::endl;
         }
     }
 
@@ -111,7 +111,7 @@ namespace {
                                   const char* key) {
         if (debug)
             std::cerr << funcName << ": dict " << id
-                      << " does not contain the key " << key << "\"\n";
+                      << " does not contain the key \"" << key << "\"\n";
     }
 
     void key_removed_msg(std::string funcName,
