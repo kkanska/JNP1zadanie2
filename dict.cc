@@ -229,7 +229,14 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
             std::string keyStr(key);
             std::string valueStr(value);
 
-            dictionaryIt->second.insert(std::make_pair(keyStr, valueStr));
+            Dict dict = dictionaryIt->second;
+            auto dictIt = dict.find(keyStr);
+
+            if (dictIt != dict.end())
+                dictIt->second = valueStr;
+            else
+                dictionaryIt->second.insert(std::make_pair(keyStr, valueStr));
+
             dict_insert_success_msg(id, keyDescription, valueDescription);
         }
     }
@@ -295,16 +302,39 @@ void dict_clear(IdentifierType id) {
 }
 
 void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
+    if (src_id == dst_id)
+        return;
+
     auto srcDictionaryIt = dicts().find(src_id);
     auto dstDictionaryIt = dicts().find(dst_id);
 
     if (srcDictionaryIt != dicts().end() &&
         dstDictionaryIt != dicts().end()) {
-        // TODO: do not copy if destination dictionary is dictglobal and amount of keys exceeds size
-
         Dict srcDict = srcDictionaryIt->second;
         Dict dstDict = dstDictionaryIt->second;
 
-        dstDict.insert(srcDict.begin(), srcDict.end());
+        const bool isGlobalDict = dst_id == dict_global();
+
+        for (auto srcIt = srcDict.begin(); srcIt != srcDict.end(); ++srcIt) {
+            std::string srcKey = srcIt->first;
+            std::string srcValue = srcIt->second;
+            auto dstIt = dstDict.find(srcKey);
+
+            if (dstIt != dstDict.end())
+                dstIt->second = srcValue;
+            else {
+                dstDict.insert(make_pair(srcKey, srcValue));
+
+                if (isGlobalDict
+                    && (dstDict.size() == MAX_GLOBAL_DICT_SIZE))
+                    break;
+            }
+        }
+
+        dict_copied_msg("dict_copy", src_id, dst_id);
     }
+    else if (srcDictionaryIt != dicts().end())
+        dict_not_found_msg("dict_copy", src_id);
+    else
+        dict_not_found_msg("dict_copy", dst_id);
 }
