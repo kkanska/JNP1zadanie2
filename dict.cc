@@ -166,6 +166,7 @@ void dict_delete(unsigned long id) {
     function_called_msg("dict_delete", ss.str());
 
     auto dictionaryIt = dicts().find(id);
+
     if (dictionaryIt != dicts().end()) {
         if (id == dict_global()) {
             dict_delete_error_msg();
@@ -183,6 +184,7 @@ size_t dict_size(unsigned long id) {
     function_called_msg("dict_size", ss.str());
 
     auto dictionaryIt = dicts().find(id);
+
     if (dictionaryIt != dicts().end()) {
         size_t dictSize = dictionaryIt->second.size();
 
@@ -207,6 +209,7 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
     function_called_msg("dict_insert", ss.str());
 
     auto dictionaryIt = dicts().find(id);
+
     if (dictionaryIt != dicts().end()) {
         if (key == NULL) {
             dict_insert_error_msg(id, "key");
@@ -236,6 +239,7 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
 
 void dict_remove(IdentifierType id, const char* key) {
     auto dictionaryIt = dicts().find(id);
+
     if (dictionaryIt != dicts().end()) {
         if (dictionaryIt->second.erase(key) > 0) {
             key_removed_msg("dict_remove", id, key);
@@ -249,6 +253,7 @@ void dict_remove(IdentifierType id, const char* key) {
 
 const char* dict_find(IdentifierType id, const char* key) {
     auto dictionaryIt = dicts().find(id);
+
     if (dictionaryIt != dicts().end()) {
         auto stringIt = dictionaryIt->second.find(key);
         if (stringIt != dictionaryIt->second.end()) {
@@ -265,6 +270,7 @@ const char* dict_find(IdentifierType id, const char* key) {
     search_global_dict_msg("dict_find");
 
     auto stringIt = dicts().at(dict_global()).find(key);
+
     if (stringIt != dicts().at(dict_global()).end()) {
         value_found_msg("dict_find", dict_global(), key, stringIt->second);
 
@@ -278,6 +284,7 @@ const char* dict_find(IdentifierType id, const char* key) {
 
 void dict_clear(IdentifierType id) {
     auto dictionaryIt = dicts().find(id);
+
     if (dictionaryIt != dicts().end()) {
         dict_cleared_msg("dict_clear", id);
 
@@ -290,6 +297,7 @@ void dict_clear(IdentifierType id) {
 void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
     auto srcDictionaryIt = dicts().find(src_id);
     auto dstDictionaryIt = dicts().find(dst_id);
+
     if (srcDictionaryIt != dicts().end() &&
         dstDictionaryIt != dicts().end()) {
         // TODO: do not copy if destination dictionary is dictglobal and amount of keys exceeds size
