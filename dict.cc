@@ -253,13 +253,13 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
             const std::string keyStr(key);
             const std::string valueStr(value);
 
-            Dict dict = dictionaryIt->second;
+            Dict& dict = dictionaryIt->second;
             auto dictIt = dict.find(keyStr);
 
             if (dictIt != dict.end())
                 dictIt->second = valueStr;
             else
-                dictionaryIt->second.insert(std::make_pair(keyStr, valueStr));
+                dict.insert(std::make_pair(keyStr, valueStr));
 
             dict_insert_success_msg(id, keyDescription, valueDescription);
         }
@@ -286,7 +286,7 @@ const char* dict_find(IdentifierType id, const char* key) {
     const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
-        const Dict dict = dictionaryIt->second;
+        const Dict& dict = dictionaryIt->second;
         const auto stringIt = dict.find(key);
 
         if (stringIt != dict.end()) {
@@ -332,8 +332,8 @@ void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
 
     if (srcDictionaryIt != dicts().end() &&
         dstDictionaryIt != dicts().end()) {
-        Dict srcDict = srcDictionaryIt->second;
-        Dict dstDict = dstDictionaryIt->second;
+        Dict& srcDict = srcDictionaryIt->second;
+        Dict& dstDict = dstDictionaryIt->second;
 
         const bool isGlobalDict = dst_id == dict_global();
 
