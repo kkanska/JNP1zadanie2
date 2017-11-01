@@ -77,6 +77,11 @@ namespace {
         }
     }
 
+    void dict_insert_global_dict_msg() {
+        if (debug)
+            std::cerr << "dict_insert: attempt to overfill the Global Dictionary" << std::endl;
+    }
+
     void dict_insert_success_msg(IdentifierType id,
                                         std::string key,
                                         std::string value) {
@@ -210,7 +215,14 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
             dict_insert_error_msg(id, "value");
         }
         else {
-            // TODO: check if global dict (size constraint!)
+            IdentifierType globalDictId = dict_global();
+
+            if ((id == globalDictId)
+                && (dict_size(globalDictId) == MAX_GLOBAL_DICT_SIZE)) {
+                dict_insert_global_dict_msg();
+                return;
+            }
+
             std::string keyStr(key);
             std::string valueStr(value);
 
