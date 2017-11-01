@@ -117,27 +117,45 @@ namespace {
     void key_removed_msg(std::string funcName,
                                 IdentifierType id,
                                 const char* key) {
-        if (debug)
-            std::cerr << funcName << ": dict " << id
-                      << ", the key \"" << key << "\" has been removed\n";
+        if (debug) {
+            std::cerr << funcName << ": ";
+
+            dict_description_msg(id);
+
+            std::cerr << " , the key \"" << key
+                      << "\" has been removed" << std::endl;
+        }
     }
 
     void value_found_msg(std::string funcName,
                                 IdentifierType id,
                                 const char* key,
                                 std::string value) {
-        if (debug)
-            std::cerr << funcName << ": dict " << id
-                      << ", the key \"" << key
-                      << "\" has the value \"" << value << "\"\n";
+        if (debug) {
+            std::cerr << funcName << ": ";
+
+            dict_description_msg(id);
+
+            std::cerr << ", the key \"" << key
+                      << "\" has the value \"" << value
+                      << "\"" << std::endl;
+        }
     }
 
     void dict_copied_msg(std::string funcName,
                                 IdentifierType src_id,
                                 IdentifierType dst_id) {
-        if (debug)
-            std::cerr << funcName << ": dict " << src_id
-                      << " has been copied into dict " << dst_id << "\n";
+        if (debug) {
+            std::cerr << funcName << ": ";
+
+            dict_description_msg(src_id);
+
+            std::cerr << " has been copied into ";
+
+            dict_description_msg(dst_id);
+
+            std::cerr << std::endl;
+        }
     }
 
     void search_global_dict_msg(std::string funcName) {
@@ -146,8 +164,13 @@ namespace {
     }
 
     void dict_cleared_msg(std::string funcName, IdentifierType id) {
-        if (debug)
-            std::cerr << funcName << ": dict " << id << " has been cleared\n";
+        if (debug) {
+            std::cerr << funcName << ": ";
+
+            dict_description_msg(id);
+
+            std::cerr << " has been cleared" << std::endl;
+        }
     }
 }
 
