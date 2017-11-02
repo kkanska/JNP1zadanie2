@@ -244,13 +244,6 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
         else {
             IdentifierType globalDictId = dict_global();
 
-            if ((id == globalDictId)
-                && (dict_size(globalDictId) == MAX_GLOBAL_DICT_SIZE)) {
-                dict_insert_global_dict_msg();
-
-                return;
-            }
-
             const std::string keyStr(key);
             const std::string valueStr(value);
 
@@ -259,8 +252,15 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
 
             if (dictIt != dict.end())
                 dictIt->second = valueStr;
-            else
+            else if (id != globalDictId ||
+                dict_size(globalDictId) < MAX_GLOBAL_DICT_SIZE )
+                
                 dict.insert(std::make_pair(keyStr, valueStr));
+            else {
+                dict_insert_global_dict_msg();
+                
+                return;
+            }
 
             dict_insert_success_msg(id, keyDescription, valueDescription);
         }
