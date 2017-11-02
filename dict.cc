@@ -355,13 +355,10 @@ void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
 
             if (dstIt != dstDict.end())
                 dstIt->second = srcValue;
-            else {
+            else if (!isGlobalDict || dstDict.size() < MAX_GLOBAL_DICT_SIZE)
                 dstDict.insert(make_pair(srcKey, srcValue));
-
-                if (isGlobalDict
-                    && (dstDict.size() == MAX_GLOBAL_DICT_SIZE))
-                    break;
-            }
+            else
+                break;
         }
 
         dict_copied_msg("dict_copy", src_id, dst_id);
