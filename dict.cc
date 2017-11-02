@@ -36,7 +36,7 @@ namespace {
     }
 
     void function_called_msg(std::string funcName,
-                                    std::string params) {
+                             std::string params) {
         if (debug)
             std::cerr << funcName << "(" << params << ")" << std::endl;
     }
@@ -84,8 +84,8 @@ namespace {
     }
 
     void dict_insert_success_msg(IdentifierType id,
-                                        std::string key,
-                                        std::string value) {
+                                 std::string key,
+                                 std::string value) {
         if (debug) {
             std::cerr << "dict_insert: ";
 
@@ -108,16 +108,16 @@ namespace {
     }
 
     void key_not_found_msg(std::string funcName,
-                                  IdentifierType id,
-                                  const char* key) {
+                           IdentifierType id,
+                           const char* key) {
         if (debug)
             std::cerr << funcName << ": dict " << id
                       << " does not contain the key \"" << key << "\"\n";
     }
 
     void key_removed_msg(std::string funcName,
-                                IdentifierType id,
-                                const char* key) {
+                         IdentifierType id,
+                         const char* key) {
         if (debug) {
             std::cerr << funcName << ": ";
 
@@ -129,9 +129,9 @@ namespace {
     }
 
     void value_found_msg(std::string funcName,
-                                IdentifierType id,
-                                const char* key,
-                                std::string value) {
+                         IdentifierType id,
+                         const char* key,
+                         std::string value) {
         if (debug) {
             std::cerr << funcName << ": ";
 
@@ -144,8 +144,8 @@ namespace {
     }
 
     void dict_copied_msg(std::string funcName,
-                                IdentifierType src_id,
-                                IdentifierType dst_id) {
+                         IdentifierType src_id,
+                         IdentifierType dst_id) {
         if (debug) {
             std::cerr << funcName << ": ";
 
