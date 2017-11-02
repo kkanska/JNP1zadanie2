@@ -192,9 +192,8 @@ void dict_delete(unsigned long id) {
     const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
-        if (id == dict_global()) {
+        if (id == dict_global())
             dict_delete_error_msg();
-        }
         else {
             dicts().erase(id);
             dict_delete_success_msg(id);
@@ -235,12 +234,10 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
     const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
-        if (key == NULL) {
+        if (key == NULL)
             dict_insert_error_msg(id, "key");
-        }
-        else if (value == NULL) {
+        else if (value == NULL)
             dict_insert_error_msg(id, "value");
-        }
         else {
             IdentifierType globalDictId = dict_global();
 
@@ -252,9 +249,8 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
 
             if (dictIt != dict.end())
                 dictIt->second = valueStr;
-            else if (id != globalDictId ||
-                dict_size(globalDictId) < MAX_GLOBAL_DICT_SIZE)
-                
+            else if (id != globalDictId || 
+                     dict_size(globalDictId) < MAX_GLOBAL_DICT_SIZE)
                 dict.insert(std::make_pair(keyStr, valueStr));
             else {
                 dict_insert_global_dict_msg();
@@ -270,16 +266,14 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
 }
 
 void dict_remove(IdentifierType id, const char* key) {
-    if (key == NULL) {
+    if (key == NULL)
         return;
-    }
 
     const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
-        if (dictionaryIt->second.erase(key) > 0) {
+        if (dictionaryIt->second.erase(key) > 0)
             key_removed_msg("dict_remove", id, key);
-        }
         else
             key_not_found_msg("dict_remove", id, key);
     }
@@ -288,9 +282,8 @@ void dict_remove(IdentifierType id, const char* key) {
 }
 
 const char* dict_find(IdentifierType id, const char* key) {
-    if (key == NULL) {
+    if (key == NULL)
         return NULL;
-    }
 
     const auto dictionaryIt = dicts().find(id);
 
