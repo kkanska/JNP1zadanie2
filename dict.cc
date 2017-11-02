@@ -270,7 +270,6 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
 }
 
 void dict_remove(IdentifierType id, const char* key) {
-    // TODO: add error message
     if (key == NULL) {
         return;
     }
@@ -289,7 +288,6 @@ void dict_remove(IdentifierType id, const char* key) {
 }
 
 const char* dict_find(IdentifierType id, const char* key) {
-    // TODO: add error message
     if (key == NULL) {
         return NULL;
     }
