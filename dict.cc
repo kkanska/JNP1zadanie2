@@ -177,11 +177,11 @@ namespace {
 
 IdentifierType dict_new() {
     function_called_msg("dict_new", "");
-    dicts().insert(std::make_pair(++dictCounter, Dict()));
+    dicts().insert(std::make_pair(dictCounter, Dict()));
 
     dict_new_msg(dictCounter);
 
-    return dictCounter;
+    return dictCounter++;
 }
 
 void dict_delete(unsigned long id) {
@@ -284,6 +284,10 @@ void dict_remove(IdentifierType id, const char* key) {
 }
 
 const char* dict_find(IdentifierType id, const char* key) {
+    if (key == NULL) {
+        return NULL;
+    }
+
     const auto dictionaryIt = dicts().find(id);
 
     if (dictionaryIt != dicts().end()) {
