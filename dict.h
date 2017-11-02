@@ -4,7 +4,10 @@
 #include <stddef.h>
 
 #ifdef __cplusplus
-extern "C" {
+#include <iostream>
+
+namespace jnp1 {
+    extern "C" {
 #endif
 
 unsigned long dict_new();
@@ -24,6 +27,7 @@ void dict_clear(unsigned long id);
 void dict_copy(unsigned long src_id, unsigned long dst_id);
 
 #ifdef __cplusplus
+    };
 }
 #endif
 

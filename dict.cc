@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sstream>
 #include <map>
 #include <unordered_map>
@@ -9,6 +8,8 @@
 
 using Dict = std::unordered_map<std::string, std::string>;
 using IdentifierType = unsigned long;
+
+namespace jnp1 {
 
 namespace {
     #ifdef NDEBUG
@@ -359,4 +360,6 @@ void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
         dict_not_found_msg("dict_copy", src_id);
     else
         dict_not_found_msg("dict_copy", dst_id);
+}
+
 }
