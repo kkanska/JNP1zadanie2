@@ -253,10 +253,11 @@ void dict_insert(unsigned long id, const char* key, const char* value) {
             if (dictIt != dict.end())
                 dictIt->second = valueStr;
             else if (id != globalDictId ||
-                dict_size(globalDictId) < MAX_GLOBAL_DICT_SIZE )
+                dict_size(globalDictId) < MAX_GLOBAL_DICT_SIZE ) {
                 
+                dict.erase(keyStr);
                 dict.insert(std::make_pair(keyStr, valueStr));
-            else {
+            } else {
                 dict_insert_global_dict_msg();
                 
                 return;
@@ -355,9 +356,10 @@ void dict_copy(IdentifierType src_id, IdentifierType dst_id) {
 
             if (dstIt != dstDict.end())
                 dstIt->second = srcValue;
-            else if (!isGlobalDict || dstDict.size() < MAX_GLOBAL_DICT_SIZE)
+            else if (!isGlobalDict || dstDict.size() < MAX_GLOBAL_DICT_SIZE) {
+                dstDict.erase(srcKey);
                 dstDict.insert(make_pair(srcKey, srcValue));
-            else
+            } else
                 break;
         }
 
